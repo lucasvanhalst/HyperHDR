@@ -370,7 +370,7 @@ bool DxGrabber::initDirectX(QString selectedDeviceName)
 							_d3dContext = nullptr;
 						}
 					}
-					
+
 					if (_d3dDevice != nullptr)
 					{
 						HRESULT status = E_FAIL;
@@ -425,7 +425,7 @@ bool DxGrabber::initDirectX(QString selectedDeviceName)
 							int targetSizeX = display->surfaceProperties.ModeDesc.Width, targetSizeY = display->surfaceProperties.ModeDesc.Height;
 
 							if (_hardware)
-							{								
+							{
 								display->actualWidth = targetSizeX;
 								display->actualHeight = targetSizeY;
 
@@ -477,7 +477,7 @@ bool DxGrabber::initDirectX(QString selectedDeviceName)
 								{
 									result = initShaders(*display);
 									if (result)
-									{										
+									{
 										Info(_log, "The DX11 device has been initialized. Hardware acceleration is enabled");
 										_handles.emplace_back(std::move(display));
 									}
@@ -485,7 +485,7 @@ bool DxGrabber::initDirectX(QString selectedDeviceName)
 									{
 										Error(_log, "CreateShaders failed");
 										uninit();
-									}	
+									}
 								}
 								else
 								{
@@ -591,7 +591,7 @@ bool DxGrabber::initShaders(DisplayHandle& display)
 			shaderDesc.Format = descConvert->Format;
 			shaderDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 			shaderDesc.Texture2D.MipLevels = descConvert->MipLevels;;
-			
+
 			status = _d3dDevice->CreateShaderResourceView(display.d3dConvertTexture, &shaderDesc, &display.d3dConvertTextureView);
 			return CHECK(status);
 		}
@@ -701,10 +701,10 @@ bool DxGrabber::initShaders(DisplayHandle& display)
 
 HRESULT DxGrabber::deepScaledCopy(DisplayHandle& display, ID3D11Texture2D* source)
 {
-	HRESULT status = S_OK;	
-	
+	HRESULT status = S_OK;
+
 	if (display.actualDivide >= 0)
-	{		
+	{
 		_d3dContext->CopySubresourceRegion(display.d3dConvertTexture, 0, 0, 0, 0, source, 0, NULL);
 		_d3dContext->GenerateMips(display.d3dConvertTextureView);
 		_d3dContext->CopySubresourceRegion(display.d3dSourceTexture, 0, 0, 0, 0, display.d3dConvertTexture, display.actualDivide, NULL);
@@ -753,7 +753,7 @@ void DxGrabber::grabFrame()
 {
 	if (_handles.size() == 0)
 		return;
-	
+
 	if (_multiMonitor)
 	{
 		int width = 0;
@@ -978,6 +978,7 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 
 				result = 1;
 				_d3dContext->Unmap(display.d3dSourceTexture, 0);
+				display.warningCounter = 15;
 			}
 
 			SafeRelease(&texDesktop);
@@ -1019,6 +1020,7 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 	if (_dxRestartNow)
 	{
 		uninit();
+		display.warningCounter = 15;
 	}
 
 	return result;

@@ -39,7 +39,7 @@ template <class T> void SafeRelease(T** ppT)
 struct DisplayHandle
 {
 	QString name;
-	int warningCounter = 6;
+	int warningCounter = 15;
 	bool wideGamut = false;
 	int actualDivide = -1, actualWidth = 0, actualHeight = 0;
 	uint targetMonitorNits = 0;
