@@ -892,7 +892,7 @@ void DxGrabber::captureFrame(DisplayHandle& display)
 		else if (display.warningCounter > 0)
 		{
 			Error(_log, "ResourceDesktop->QueryInterface failed. Reason: %i", status);
-			display.warningCounter--;
+ //			display.warningCounter--;
 		}
 	}
 	else if (status == DXGI_ERROR_WAIT_TIMEOUT)
@@ -900,7 +900,7 @@ void DxGrabber::captureFrame(DisplayHandle& display)
 		if (display.warningCounter > 0)
 		{
 			Debug(_log, "AcquireNextFrame didn't return the frame. Just warning: the screen has not changed?");
-			display.warningCounter--;
+//			display.warningCounter--;
 		}
 
 		if (_cacheImage.width() > 1)
@@ -916,7 +916,7 @@ void DxGrabber::captureFrame(DisplayHandle& display)
 	else if (display.warningCounter > 0)
 	{
 		Error(_log, "AcquireNextFrame failed. Reason: %i", status);
-		display.warningCounter--;
+//		display.warningCounter--;
 	}
 
 	SafeRelease(&resourceDesktop);
@@ -978,7 +978,6 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 
 				result = 1;
 				_d3dContext->Unmap(display.d3dSourceTexture, 0);
-				display.warningCounter = 15;
 			}
 
 			SafeRelease(&texDesktop);
@@ -986,7 +985,7 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 		else if (display.warningCounter > 0)
 		{
 			Error(_log, "ResourceDesktop->QueryInterface failed. Reason: %i", status);
-			display.warningCounter--;
+//			display.warningCounter--;
 		}
 	}
 	else if (status == DXGI_ERROR_WAIT_TIMEOUT)
@@ -994,7 +993,7 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 		if (display.warningCounter > 0)
 		{
 			Debug(_log, "AcquireNextFrame didn't return the frame. Just warning: the screen has not changed?");
-			display.warningCounter--;
+//			display.warningCounter--;
 		}
 
 		if (_cacheImage.width() > 1)
@@ -1010,7 +1009,7 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 	else if (display.warningCounter > 0)
 	{
 		Error(_log, "AcquireNextFrame failed. Reason: %i", status);
-		display.warningCounter--;
+//		display.warningCounter--;
 	}
 
 	SafeRelease(&resourceDesktop);
@@ -1020,7 +1019,6 @@ int DxGrabber::captureFrame(DisplayHandle& display, Image<ColorRgb>& image)
 	if (_dxRestartNow)
 	{
 		uninit();
-		display.warningCounter = 15;
 	}
 
 	return result;
